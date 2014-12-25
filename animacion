@@ -1,0 +1,122 @@
+# -*- coding: utf-8 -*-
+import pygame
+import math
+import random
+import time
+import __init__
+
+import printimagen
+
+pygame.init()
+
+
+NEGRO   = (   0,   0,   0)
+BLANCO  = ( 255, 255, 255)
+VERDE   = (   0, 255,   0)
+ROJO    = ( 255,   0,   0)
+dimensiones = (700, 500)
+#Nombre en la barra
+pantalla = pygame.display.set_caption("Piedra, Papel, Tijera")
+#Abre ventana
+pantalla = pygame.display.set_mode(dimensiones)
+hecho = False
+reloj = pygame.time.Clock()
+
+fuente = pygame.font.Font(None, 30)
+
+
+
+pantalla.fill(BLANCO)
+printimagen.printimagen()
+
+while hecho == False:
+    #cerrar pantalla
+    for evento in pygame.event.get():
+        if evento.type == pygame.QUIT:
+            hecho= True
+    #Pinta la ventada de un color
+    pantalla.fill(BLANCO)
+    
+
+
+
+    
+    pos = pygame.mouse.get_pos()
+    x = pos [0]
+    y = pos [1]
+    
+    opciones = ["piedra", "papel", "tijeras"]
+    random_index = random.randrange(3)
+    rival = opciones[random_index]
+    respuesta=""
+
+    if evento.type == pygame.MOUSEBUTTONDOWN or evento.type == pygame.KEYDOWN:
+        
+        
+        if y >=100 and y<=200:
+        
+            if x>=100 and x<=200 and evento.type == pygame.MOUSEBUTTONDOWN:
+               # pantalla.blit(imagentijerasver, [100,100])
+                respuesta = "tijeras"
+            
+            elif x>=300 and x<=400 and evento.type == pygame.MOUSEBUTTONDOWN:
+               # pantalla.blit(imagenpapelver, [300,100])
+                respuesta = "papel"
+            elif x>=500 and x<=600 and evento.type == pygame.MOUSEBUTTONDOWN:
+               # pantalla.blit(imagenpiedraver, [500,100])
+                respuesta = "piedra"
+
+            
+        if respuesta != "":
+            texto1 = fuente.render(str(respuesta),True, NEGRO)
+            texto2 = fuente.render("VS",True, NEGRO)
+            texto3 = fuente.render(str(rival),True,NEGRO)
+
+            pantalla.blit(texto1, [200,300])
+            pantalla.blit(texto2, [300,300])
+            pantalla.blit(texto3, [400,300])
+            pygame.display.flip()
+            
+        
+        if respuesta == "papel":
+            if rival == "piedra":
+                resultado = "victoria"
+            elif rival == "tijeras":
+                resultado = "derrota"
+            else:
+                resultado = "empate"
+
+        elif respuesta == "piedra":
+            if rival == "tijeras":
+                resultado = "victoria"
+            elif rival == "papel":
+                resultado = "derrota"
+            else:
+                resultado = "empate"
+
+        elif respuesta == "tijeras":
+            if rival == "papel":
+                resultado = "victoria"
+            elif rival == "piedra":
+                resultado = "derrota"
+            else:
+                resultado = "empate"
+        victoria = fuente.render("VICTORIA",True,NEGRO)
+        derrota = fuente.render("DERROTA",True,NEGRO)
+        empate = fuente.render("EMPATE",True,NEGRO)
+        if resultado == "victoria":
+            pantalla.fill(VERDE)
+            pantalla.blit(victoria, [300,400])
+        elif resultado == "derrota":
+            pantalla.fill(ROJO)
+            pantalla.blit(derrota, [300,400])
+        elif resultado == "empate":
+            pantalla.blit(empate, [300,400])
+            
+            
+        reloj.tick(10)
+        pygame.display.flip()
+        time.sleep(1)
+    
+pygame.quit()
+
